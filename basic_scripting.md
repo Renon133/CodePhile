@@ -235,3 +235,182 @@ Certainly! Here’s an organized set of notes for writing Zsh scripts:
   ```
 
 ---
+
+### **1. Advanced Variable Handling**
+
+- **Array Operations:**
+  ```zsh
+  array=(a b c)
+  echo "${array[@]}"       # Outputs all elements
+  echo "${array[1]}"       # Outputs the second element
+  echo "${#array[@]}"      # Outputs the number of elements
+  ```
+
+- **Associative Arrays (Hashmaps):**
+  ```zsh
+  typeset -A assoc_array
+  assoc_array[key1]="value1"
+  assoc_array[key2]="value2"
+  echo "${assoc_array[key1]}"  # Outputs: value1
+  ```
+
+### **2. Error Handling**
+
+- **Exit Status:**
+  ```zsh
+  command
+  if [ $? -ne 0 ]; then
+    echo "Command failed."
+  fi
+  ```
+
+- **Trap Errors:**
+  ```zsh
+  trap 'echo "An error occurred."' ERR
+  ```
+
+### **3. Scripting Best Practices**
+
+- **Use Functions for Reusability:**
+  Functions help avoid code duplication and improve readability.
+
+  ```zsh
+  calculate_sum() {
+    local a=$1
+    local b=$2
+    echo $((a + b))
+  }
+
+  result=$(calculate_sum 5 10)
+  echo "Sum: $result"
+  ```
+
+- **Check for Dependencies:**
+  Ensure that required commands or files are present before running the main logic.
+
+  ```zsh
+  if ! command -v some_command &> /dev/null; then
+    echo "some_command is not installed. Exiting."
+    exit 1
+  fi
+  ```
+
+- **Use Quotes to Prevent Word Splitting:**
+  Always quote variables to prevent unexpected behavior.
+
+  ```zsh
+  echo "$variable"
+  ```
+
+### **4. Input Validation**
+
+- **Validate Arguments:**
+  Ensure that the correct number of arguments are passed.
+
+  ```zsh
+  if [ $# -ne 2 ]; then
+    echo "Usage: $0 arg1 arg2"
+    exit 1
+  fi
+  ```
+
+- **Validate File Existence:**
+  ```zsh
+  if [ ! -f "$file" ]; then
+    echo "File does not exist."
+    exit 1
+  fi
+  ```
+
+### **5. Working with Files and Directories**
+
+- **File Manipulation:**
+  ```zsh
+  cp source.txt destination.txt  # Copy file
+  mv oldname.txt newname.txt     # Rename/move file
+  rm file.txt                    # Delete file
+  ```
+
+- **Directory Navigation:**
+  ```zsh
+  cd /path/to/directory
+  mkdir new_directory
+  rmdir empty_directory
+  ```
+
+### **6. Using External Commands**
+
+- **Command Substitution:**
+  ```zsh
+  current_date=$(date)
+  echo "Current date: $current_date"
+  ```
+
+- **Process Substitution:**
+  ```zsh
+  diff <(command1) <(command2)
+  ```
+
+### **7. Scripting Techniques**
+
+- **Pipeline and Redirection:**
+  ```zsh
+  command1 | command2 > output.txt
+  ```
+
+- **Background Processes:**
+  ```zsh
+  command &   # Run in background
+  ```
+
+- **Job Control:**
+  ```zsh
+  jobs       # List jobs
+  fg %1      # Bring job 1 to foreground
+  bg %1      # Resume job 1 in background
+  ```
+
+### **8. Debugging and Profiling**
+
+- **Debugging with `set -x`:**
+  Shows each command before it is executed.
+
+  ```zsh
+  set -x
+  ```
+
+- **Profiling:**
+  Measure execution time of commands.
+
+  ```zsh
+  time command
+  ```
+
+### **9. Using Zsh Features**
+
+- **Parameter Expansion:**
+  ```zsh
+  ${variable:-default}    # Use default if variable is unset
+  ${variable:position:length}  # Substring extraction
+  ```
+
+- **Array Manipulation:**
+  ```zsh
+  ${array[@]/pattern/replacement}   # Replace pattern in array elements
+  ```
+
+### **10. Security Considerations**
+
+- **Avoid Command Injection:**
+  Ensure that user inputs are sanitized if they are used in commands.
+
+  ```zsh
+  safe_variable=$(echo "$user_input" | sed 's/[^a-zA-Z0-9_]//g')
+  ```
+
+### **Resources for Further Learning**
+
+- **Zsh Manual:** `man zsh`
+- **Zsh Wiki:** [Zsh Wiki](https://zsh.sourceforge.io/)
+- **Online Tutorials:** Websites like [Zsh Guide](https://zsh.sourceforge.io/Doc/Release/) and forums for community support.
+
